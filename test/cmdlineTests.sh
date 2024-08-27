@@ -220,6 +220,11 @@ json = re.sub(r"\n\s*\n", "\n", json)                                           
 json = re.sub(r"},(\n{0,1})\n*(\s*(]|}))", r"}\1\2", json)                          # Remove trailing comma
 open("$stdout_path", "w").write(json)
 EOF
+        if grep -q "ethdebug" "$stdout_path";
+        then
+          jq --indent 4 '(. | .. | objects | select(has("ethdebug"))) |= (.ethdebug = "<ETHDEBUG DEBUG DATA REMOVED>")' "$stdout_path" > tmp && mv tmp "$stdout_path"
+        fi
+
         sed -i.bak -E -e 's/ Consider adding \\"pragma solidity \^[0-9.]*;\\"//g' "$stdout_path"
         sed -i.bak -E -e 's/\"opcodes\":[[:space:]]*\"[^"]+\"/\"opcodes\":\"<OPCODES REMOVED>\"/g' "$stdout_path"
         sed -i.bak -E -e 's/\"sourceMap\":[[:space:]]*\"[0-9:;-]+\"/\"sourceMap\":\"<SOURCEMAP REMOVED>\"/g' "$stdout_path"
@@ -232,6 +237,7 @@ EOF
         sed -i.bak -E -e 's/([0-9a-f]{34}\$__)[0-9a-f]+(__\$[0-9a-f]{17})/\1<BYTECODE REMOVED>\2/g' "$stdout_path"
         # Remove metadata in assembly output (see below about the magic numbers)
         sed -i.bak -E -e 's/"[0-9a-f]+64697066735822[0-9a-f]+64736f6c63[0-9a-f]+/"<BYTECODE REMOVED>/g' "$stdout_path"
+
 
         # Replace escaped newlines by actual newlines for readability
         # shellcheck disable=SC1003

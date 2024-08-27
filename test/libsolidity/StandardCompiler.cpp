@@ -2236,6 +2236,31 @@ BOOST_AUTO_TEST_CASE(ethdebug_ethdebug_output)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(ethdebug_output_instructions_smoketest)
+{
+	auto checkEthdebugInstructions = [&](Json const& ethdebug, bool creation, int id, std::string const& contractName) {
+		BOOST_REQUIRE(ethdebug["contract"]["definition"]["sources"]["id"] == id);
+		BOOST_REQUIRE(ethdebug["contract"]["name"] == contractName);
+		BOOST_REQUIRE(ethdebug["environment"] == creation ? "create" : "call");
+		BOOST_REQUIRE(ethdebug["instructions"].is_array());
+		for (auto const& instruction: ethdebug["instructions"])
+		{
+			BOOST_REQUIRE(instruction.contains("offset"));
+			BOOST_REQUIRE(instruction.contains("operation"));
+			BOOST_REQUIRE(instruction["operation"].contains("mnemonic"));
+			BOOST_REQUIRE(instruction["context"]["code"]["range"].contains("length"));
+			BOOST_REQUIRE(instruction["context"]["code"]["range"].contains("offset"));
+			BOOST_REQUIRE(instruction["context"]["code"]["source"].contains("id"));
+		}
+	};
+	frontend::StandardCompiler compiler;
+	Json result = compiler.compile(generateStandardJson(true, {}, Json::array({"evm.bytecode.ethdebug", "evm.deployedBytecode.ethdebug"})));
+	BOOST_REQUIRE(result["contracts"]["fileA"]["C"]["evm"]["deployedBytecode"].contains("ethdebug"));
+	BOOST_REQUIRE(result["contracts"]["fileA"]["C"]["evm"]["bytecode"].contains("ethdebug"));
+	checkEthdebugInstructions(result["contracts"]["fileA"]["C"]["evm"]["deployedBytecode"]["ethdebug"], true, 0, "C");
+	checkEthdebugInstructions(result["contracts"]["fileA"]["C"]["evm"]["bytecode"]["ethdebug"], false, 0, "C");
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 } // end namespaces
