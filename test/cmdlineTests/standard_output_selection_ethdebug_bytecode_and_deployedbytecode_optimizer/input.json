@@ -13,6 +13,9 @@
   "optimizer": {
    "enabled": true
   },
+  "metadata": {
+   "appendCBOR": false
+  },
   "outputSelection": {
    "*": {
     "*": [

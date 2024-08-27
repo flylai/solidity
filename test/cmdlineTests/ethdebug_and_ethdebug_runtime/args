@@ -1,1 +1,1 @@
---ethdebug-runtime --ethdebug --via-ir --ir
+--ethdebug-runtime --ethdebug --via-ir --ir --no-cbor-metadata
