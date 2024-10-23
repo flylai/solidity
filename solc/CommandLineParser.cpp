@@ -769,6 +769,7 @@ General Information)").c_str(),
 		(CompilerOutputs::componentName(&CompilerOutputs::metadata).c_str(), "Combined Metadata JSON whose IPFS hash is stored on-chain.")
 		(CompilerOutputs::componentName(&CompilerOutputs::storageLayout).c_str(), "Slots, offsets and types of the contract's state variables located in storage.")
 		(CompilerOutputs::componentName(&CompilerOutputs::transientStorageLayout).c_str(), "Slots, offsets and types of the contract's state variables located in transient storage.")
+		(CompilerOutputs::componentName(&CompilerOutputs::assemblyStructure).c_str(), "Structure of the assembly and its subassemblies providing offsets, lengths and creation indicators.")
 	;
 	if (!_forHelp) // Note: We intentionally keep this undocumented for now.
 	{
@@ -1568,7 +1569,8 @@ void CommandLineParser::parseCombinedJsonOption()
 			&CombinedJsonRequests::natspecUser,
 			&CombinedJsonRequests::signatureHashes,
 			&CombinedJsonRequests::storageLayout,
-			&CombinedJsonRequests::transientStorageLayout
+			&CombinedJsonRequests::transientStorageLayout,
+			&CombinedJsonRequests::assemblyStructure,
 		};
 
 		for (auto const invalidOption: invalidOptions)
