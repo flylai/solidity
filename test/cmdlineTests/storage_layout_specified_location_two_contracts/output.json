@@ -1,0 +1,74 @@
+{
+    "contracts": {
+        "fileA": {
+            "A": {
+                "storageLayout": {
+                    "storage": [
+                        {
+                            "astId": 5,
+                            "contract": "fileA:A",
+                            "label": "x",
+                            "offset": 0,
+                            "slot": "42",
+                            "type": "t_uint32"
+                        },
+                        {
+                            "astId": 7,
+                            "contract": "fileA:A",
+                            "label": "y",
+                            "offset": 0,
+                            "slot": "43",
+                            "type": "t_int256"
+                        },
+                        {
+                            "astId": 9,
+                            "contract": "fileA:A",
+                            "label": "b",
+                            "offset": 0,
+                            "slot": "44",
+                            "type": "t_bool"
+                        },
+                        {
+                            "astId": 11,
+                            "contract": "fileA:A",
+                            "label": "a",
+                            "offset": 1,
+                            "slot": "44",
+                            "type": "t_address"
+                        }
+                    ],
+                    "types": {
+                        "t_address": {
+                            "encoding": "inplace",
+                            "label": "address",
+                            "numberOfBytes": "20"
+                        },
+                        "t_bool": {
+                            "encoding": "inplace",
+                            "label": "bool",
+                            "numberOfBytes": "1"
+                        },
+                        "t_int256": {
+                            "encoding": "inplace",
+                            "label": "int256",
+                            "numberOfBytes": "32"
+                        },
+                        "t_uint32": {
+                            "encoding": "inplace",
+                            "label": "uint32",
+                            "numberOfBytes": "4"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "sources": {
+        "fileA": {
+            "id": 0
+        },
+        "fileB": {
+            "id": 1
+        }
+    }
+}
