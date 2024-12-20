@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include <libsolutil/Numeric.h>
+
 namespace solidity::frontend
 {
 
@@ -26,6 +28,7 @@ class Declaration;
 class Expression;
 class SourceUnit;
 class VariableDeclaration;
+class ContractDefinition;
 
 /// Find the topmost referenced constant variable declaration when the given variable
 /// declaration value is an identifier. Works only for constant variable declarations.
@@ -47,5 +50,7 @@ Type const* type(Expression const& _expression);
 /// @returns the type of the given variable and throws if the type is not present
 /// (this can happen for variables with non-explicit types before their types are resolved)
 Type const* type(VariableDeclaration const& _variable);
+
+u256 storageBaseLocationValue(ContractDefinition const& _contract);
 
 }

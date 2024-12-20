@@ -107,4 +107,11 @@ Type const* type(VariableDeclaration const& _variable)
 	return _variable.annotation().type;
 }
 
+u256 storageBaseLocationValue(ContractDefinition const& _contract)
+{
+	if (_contract.storageLayoutSpecifier())
+		return *_contract.storageLayoutSpecifier()->annotation().baseSlot;
+	return 0;
+}
+
 }
