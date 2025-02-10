@@ -93,10 +93,11 @@ void EVMObjectCompiler::run(Object const& _object, bool _optimize)
 		if (!stackErrors.empty())
 		{
 			yulAssert(_object.dialect());
+			auto const memoryGuardHandle = evmDialect->findBuiltin("memoryguard");
+			yulAssert(memoryGuardHandle, "Compiling with object access, memoryguard should be available as builtin.");
 			std::vector<FunctionCall const*> memoryGuardCalls = findFunctionCalls(
 				_object.code()->root(),
-				"memoryguard",
-				*_object.dialect()
+				*memoryGuardHandle
 			);
 			auto stackError = stackErrors.front();
 			std::string msg = stackError.comment() ? *stackError.comment() : "";
