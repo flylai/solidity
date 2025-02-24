@@ -11,9 +11,6 @@ contract C layout at 7 {
         return z;
     }
 }
-// ====
-// EVMVersion: >=prague
-// compileViaYul: true
 // ----
 // f(uint256): 2 -> 0
 // f(uint256): 3 -> 5

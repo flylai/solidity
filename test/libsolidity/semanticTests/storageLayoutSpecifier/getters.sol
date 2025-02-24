@@ -3,9 +3,6 @@ contract C layout at 7 {
     int8 public y = 2;
     uint32 public z = 3;
 }
-// ====
-// EVMVersion: >=prague
-// compileViaYul: true
 // ----
 // x() -> 1
 // y() -> 2

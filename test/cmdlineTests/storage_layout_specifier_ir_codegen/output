@@ -1,0 +1,141 @@
+
+======= <stdin>:C =======
+EVM assembly:
+    /* "<stdin>":59:103  contract C layout at 42 {... */
+  mstore(0x40, 0x80)
+    /* "<stdin>":98:100  10 */
+  0x0a
+    /* "<stdin>":89:100  uint x = 10 */
+  0x2a
+  sstore
+    /* "<stdin>":59:103  contract C layout at 42 {... */
+  callvalue
+  dup1
+  iszero
+  tag_1
+  jumpi
+  revert(0x00, 0x00)
+tag_1:
+  pop
+  dataSize(sub_0)
+  dup1
+  dataOffset(sub_0)
+  0x00
+  codecopy
+  0x00
+  return
+stop
+
+sub_0: assembly {
+        /* "<stdin>":59:103  contract C layout at 42 {... */
+      mstore(0x40, 0x80)
+      revert(0x00, 0x00)
+
+    auxdata: <AUXDATA REMOVED>
+}
+
+IR:
+
+/// @use-src 0:"<stdin>"
+object "C_7" {
+    code {
+        /// @src 0:59:103  "contract C layout at 42 {..."
+        mstore(64, memoryguard(128))
+        if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+
+        constructor_C_7()
+
+        let _1 := allocate_unbounded()
+        codecopy(_1, dataoffset("C_7_deployed"), datasize("C_7_deployed"))
+
+        return(_1, datasize("C_7_deployed"))
+
+        function allocate_unbounded() -> memPtr {
+            memPtr := mload(64)
+        }
+
+        function revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() {
+            revert(0, 0)
+        }
+
+        function shift_left_0(value) -> newValue {
+            newValue :=
+
+            shl(0, value)
+
+        }
+
+        function update_byte_slice_32_shift_0(value, toInsert) -> result {
+            let mask := 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+            toInsert := shift_left_0(toInsert)
+            value := and(value, not(mask))
+            result := or(value, and(toInsert, mask))
+        }
+
+        function cleanup_t_rational_10_by_1(value) -> cleaned {
+            cleaned := value
+        }
+
+        function cleanup_t_uint256(value) -> cleaned {
+            cleaned := value
+        }
+
+        function identity(value) -> ret {
+            ret := value
+        }
+
+        function convert_t_rational_10_by_1_to_t_uint256(value) -> converted {
+            converted := cleanup_t_uint256(identity(cleanup_t_rational_10_by_1(value)))
+        }
+
+        function prepare_store_t_uint256(value) -> ret {
+            ret := value
+        }
+
+        function update_storage_value_offset_0_t_rational_10_by_1_to_t_uint256(slot, value_0) {
+            let convertedValue_0 := convert_t_rational_10_by_1_to_t_uint256(value_0)
+            sstore(slot, update_byte_slice_32_shift_0(sload(slot), prepare_store_t_uint256(convertedValue_0)))
+        }
+
+        /// @src 0:59:103  "contract C layout at 42 {..."
+        function constructor_C_7() {
+
+            /// @src 0:59:103  "contract C layout at 42 {..."
+
+            /// @src 0:98:100  "10"
+            let expr_5 := 0x0a
+            update_storage_value_offset_0_t_rational_10_by_1_to_t_uint256(0x2a, expr_5)
+
+        }
+        /// @src 0:59:103  "contract C layout at 42 {..."
+
+    }
+    /// @use-src 0:"<stdin>"
+    object "C_7_deployed" {
+        code {
+            /// @src 0:59:103  "contract C layout at 42 {..."
+            mstore(64, memoryguard(128))
+
+            revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74()
+
+            function shift_right_224_unsigned(value) -> newValue {
+                newValue :=
+
+                shr(224, value)
+
+            }
+
+            function allocate_unbounded() -> memPtr {
+                memPtr := mload(64)
+            }
+
+            function revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74() {
+                revert(0, 0)
+            }
+
+        }
+
+        data ".metadata" hex"<BYTECODE REMOVED>"
+    }
+
+}

@@ -1,11 +1,11 @@
 contract A {
     uint x;
-    int w;
+    uint32 w;
 }
 
 contract C is A layout at 7 {
-    int32 y;
-    uint256 z;
+    uint128 y;
+    uint z;
 
     function f() public returns(uint s, uint o) {
         assembly {
@@ -15,21 +15,25 @@ contract C is A layout at 7 {
     }
     function g() public returns(uint s, uint o) {
         assembly {
+            s := w.slot
+            o := w.offset
+        }
+    }
+    function h() public returns(uint s, uint o) {
+        assembly {
             s := y.slot
             o := y.offset
         }
     }
-    function h() public returns(uint s, uint o) {
+    function i() public returns(uint s, uint o) {
         assembly {
             s := z.slot
             o := z.offset
         }
     }
 }
-// ====
-// EVMVersion: >=prague
-// compileViaYul: true
 // ----
 // f() -> 7, 0
-// g() -> 9, 0
-// h() -> 10, 0
+// g() -> 8, 0
+// h() -> 8, 4
+// i() -> 9, 0

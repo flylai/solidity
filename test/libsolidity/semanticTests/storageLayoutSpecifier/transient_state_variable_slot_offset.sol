@@ -24,8 +24,7 @@ contract C layout at 7 {
     }
 }
 // ====
-// EVMVersion: >=prague
-// compileViaYul: true
+// EVMVersion: >=cancun
 // ----
 // f() -> 0, 0
 // g() -> 7, 0

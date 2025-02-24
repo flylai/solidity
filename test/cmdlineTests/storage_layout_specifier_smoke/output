@@ -1,0 +1,29 @@
+
+======= <stdin>:C =======
+EVM assembly:
+    /* "<stdin>":59:85  contract C layout at 42 {} */
+  mstore(0x40, 0x80)
+  callvalue
+  dup1
+  iszero
+  tag_1
+  jumpi
+  revert(0x00, 0x00)
+tag_1:
+  pop
+  dataSize(sub_0)
+  dup1
+  dataOffset(sub_0)
+  0x00
+  codecopy
+  0x00
+  return
+stop
+
+sub_0: assembly {
+        /* "<stdin>":59:85  contract C layout at 42 {} */
+      mstore(0x40, 0x80)
+      revert(0x00, 0x00)
+
+    auxdata: <AUXDATA REMOVED>
+}

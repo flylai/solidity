@@ -11,8 +11,8 @@
 	"settings": {
 		"outputSelection": {
 			"fileA": {
-				"A": [ "storageLayout" ],
-				"": [ ]
+				"A": ["storageLayout"],
+				"": []
 			}
 		}
 	}
