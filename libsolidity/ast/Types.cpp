@@ -139,9 +139,10 @@ void Type::clearCache() const
 	m_stackSize.reset();
 }
 
-void StorageOffsets::computeOffsets(TypePointers const& _types, u256 _slotStart)
+void StorageOffsets::computeOffsets(TypePointers const& _types, u256 _baseSlot)
 {
-	bigint slotOffset = bigint(_slotStart);
+	bigint slotOffset = bigint(_baseSlot);
+	bigint storageSize = 0;
 	unsigned byteOffset = 0;
 	std::map<size_t, std::pair<u256, unsigned>> offsets;
 	for (size_t i = 0; i < _types.size(); ++i)
@@ -153,9 +154,11 @@ void StorageOffsets::computeOffsets(TypePointers const& _types, u256 _slotStart)
 		{
 			// would overflow, go to next slot
 			++slotOffset;
+			++storageSize;
 			byteOffset = 0;
 		}
-		solAssert(slotOffset < bigint(1) << 256 ,"Object too large for storage.");
+		solAssert(storageSize < bigint(1) << 256 , "Object too large for storage.");
+		solAssert(slotOffset < bigint(1) << 256 , "Object extends past the end of storage.");
 		offsets[i] = std::make_pair(u256(slotOffset), byteOffset);
 		solAssert(type->storageSize() >= 1, "Invalid storage size.");
 		if (type->storageSize() == 1 && byteOffset + type->storageBytes() <= 32)
@@ -163,13 +166,19 @@ void StorageOffsets::computeOffsets(TypePointers const& _types, u256 _slotStart)
 		else
 		{
 			slotOffset += type->storageSize();
+			storageSize += type->storageSize();
 			byteOffset = 0;
 		}
 	}
 	if (byteOffset > 0)
+	{
 		++slotOffset;
-	solAssert(slotOffset < bigint(1) << 256, "Object too large for storage.");
-	m_storageSize = u256(slotOffset);
+		++storageSize;
+	}
+
+	solAssert(storageSize < bigint(1) << 256, "Object too large for storage.");
+	solAssert(slotOffset < bigint(1) << 256 , "Object extends past the end of storage.");
+	m_storageSize = u256(storageSize);
 	swap(m_offsets, offsets);
 }
 
