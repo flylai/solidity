@@ -2174,10 +2174,10 @@ std::vector<std::tuple<VariableDeclaration const*, u256, unsigned>> ContractType
 	for (auto variable: variables)
 		types.push_back(variable->annotation().type);
 	StorageOffsets offsets;
-	u256 startSlot = 0;
+	u256 baseSlot = 0;
 	if (_location == DataLocation::Storage)
-		startSlot = storageBaseLocationValue(m_contract);
-	offsets.computeOffsets(types, startSlot);
+		baseSlot = storageLayoutBaseForInheritanceHierarchy(m_contract);
+	offsets.computeOffsets(types, baseSlot);
 
 	std::vector<std::tuple<VariableDeclaration const*, u256, unsigned>> variablesAndOffsets;
 	for (size_t index = 0; index < variables.size(); ++index)

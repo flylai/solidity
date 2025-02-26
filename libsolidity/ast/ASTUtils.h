@@ -51,6 +51,6 @@ Type const* type(Expression const& _expression);
 /// (this can happen for variables with non-explicit types before their types are resolved)
 Type const* type(VariableDeclaration const& _variable);
 
-u256 storageBaseLocationValue(ContractDefinition const& _contract);
+u256 storageLayoutBaseForInheritanceHierarchy(ContractDefinition const& _topLevelContract);
 
 }

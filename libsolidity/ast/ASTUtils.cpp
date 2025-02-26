@@ -107,10 +107,10 @@ Type const* type(VariableDeclaration const& _variable)
 	return _variable.annotation().type;
 }
 
-u256 storageBaseLocationValue(ContractDefinition const& _contract)
+u256 storageLayoutBaseForInheritanceHierarchy(ContractDefinition const& _topLevelContract)
 {
-	if (_contract.storageLayoutSpecifier())
-		return *_contract.storageLayoutSpecifier()->annotation().baseSlot;
+	if (_topLevelContract.storageLayoutSpecifier())
+		return *_topLevelContract.storageLayoutSpecifier()->annotation().baseSlot;
 	return 0;
 }
 
