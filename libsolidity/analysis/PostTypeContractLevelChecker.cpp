@@ -73,15 +73,17 @@ bool PostTypeContractLevelChecker::check(ContractDefinition const& _contract)
 			errorHashes[hash][signature] = error->location();
 	}
 
-	if (auto const* layoutSpecifier = _contract.storageLayoutSpecifier())
-		checkStorageLayoutSpecifier(*layoutSpecifier);
+	if (_contract.storageLayoutSpecifier())
+		checkStorageLayoutSpecifier(_contract);
 
 	return !Error::containsErrors(m_errorReporter.errors());
 }
 
-void PostTypeContractLevelChecker::checkStorageLayoutSpecifier(StorageLayoutSpecifier const& _storageLayoutSpecifier)
+void PostTypeContractLevelChecker::checkStorageLayoutSpecifier(ContractDefinition const& _contract)
 {
-	Expression const& baseSlotExpression = _storageLayoutSpecifier.baseSlotExpression();
+	StorageLayoutSpecifier const* storageLayoutSpecifier = _contract.storageLayoutSpecifier();
+	solAssert(storageLayoutSpecifier);
+	Expression const& baseSlotExpression = storageLayoutSpecifier->baseSlotExpression();
 
 	if (!*baseSlotExpression.annotation().isPure)
 	{
@@ -134,5 +136,20 @@ void PostTypeContractLevelChecker::checkStorageLayoutSpecifier(StorageLayoutSpec
 	}
 
 	solAssert(baseSlotExpressionType->isImplicitlyConvertibleTo(*TypeProvider::uint256()));
-	_storageLayoutSpecifier.annotation().baseSlot = u256(rationalType->value().numerator());
+	bigint baseSlot = u256(rationalType->value().numerator());
+	storageLayoutSpecifier->annotation().baseSlot = u256(baseSlot);
+
+	bigint size = 0;
+	for (ContractDefinition const* contract: _contract.annotation().linearizedBaseContracts)
+		for (VariableDeclaration const* variable: contract->stateVariables())
+			if (!(variable->isConstant() || variable->immutable()))
+				size += variable->annotation().type->storageSizeUpperBound();
+
+	solAssert(size < bigint(1) << 256);
+	if (baseSlot + size >= bigint(1) << 256)
+		m_errorReporter.typeError(
+			5015_error,
+			baseSlotExpression.location(),
+			"Contract extends past the end of storage when this base slot value is specified."
+		);
 }
