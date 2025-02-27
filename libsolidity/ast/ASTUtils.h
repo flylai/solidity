@@ -51,6 +51,9 @@ Type const* type(Expression const& _expression);
 /// (this can happen for variables with non-explicit types before their types are resolved)
 Type const* type(VariableDeclaration const& _variable);
 
+/// @returns the value of the base slot of the contract's inheritance hierarchy storage if it is explicit specified.
+/// In any other case, including invalid ones, returns the default value of zero.
+/// Assumes analysis was successful.
 u256 storageLayoutBaseForInheritanceHierarchy(ContractDefinition const& _topLevelContract);
 
 }
